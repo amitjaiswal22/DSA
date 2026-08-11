@@ -32,17 +32,11 @@ public:
         int ans=solve(0,n,cost,dp);
         int ans2=solve(1,n,cost,mp);
         return min(ans,ans2);*/
-       vector<int> dp(n + 2, 0);
-
-        // Base case:
-        // dp[n] = 0 -> reached the top
-        // dp[n+1] = 0
-
-        for (int i = n - 1; i >= 0; i--) {
-            dp[i] = cost[i] + min(dp[i + 1], dp[i + 2]);
-        }
-
-        return min(dp[0], dp[1]);
+       vector<int>dp(n+2,0);
+       for(int i=n-1;i>=0;i--)
+         dp[i]=cost[i]+min(dp[i+1],dp[i+2]);
+         return min(dp[0],dp[1]);
+         
         
        
     }
