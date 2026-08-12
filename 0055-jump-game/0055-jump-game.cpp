@@ -19,8 +19,17 @@ public:
     }
     bool canJump(vector<int>& nums) {
         int n=nums.size();
-          unordered_map<int,bool>mp;
+        /*  unordered_map<int,bool>mp;
           bool ans=solve(0,n,nums,mp);
-          return ans;
+          return ans;*/
+          int far=0;
+          for(int i=0;i<n;i++){
+            if(i>far)
+               return 0;
+            far=max(far,i+nums[i]);
+            if(far>=n-1)
+              return 1;   
+          }
+          return 0;
     }
 };
