@@ -11,22 +11,19 @@ public:
         }
         if(sum%2)
             return false;
+      vector<bool>dp(sum/2+1,false);
+     
+         dp[0]=1;
       
-      vector<vector<bool>>dp(n+1,vector<bool>(sum/2+1,false));
-      for(int i=0;i<=n;i++){
-         dp[i][0]=1;
-      }
-      for(int i=n-1;i>=0;i--){
-        for(int j=1;j<=sum/2;j++){
-            bool n_take=dp[i+1][j];
-            bool take=false;
-            if(j>=nums[i])
-                take=dp[i+1][j-nums[i]];
-    dp[i][j]=take||n_take;
+       for (int i = 0; i < n; i++) {
+
+            for (int j = sum/2; j >= nums[i]; j--) {
+
+                dp[j] = dp[j] || dp[j - nums[i]];
+            }
         }
-    
-      }
-      return dp[0][sum/2];
+
+      return dp[sum/2];
 
 
 
