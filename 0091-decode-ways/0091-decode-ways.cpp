@@ -23,9 +23,9 @@ public:
        /* unordered_map<int,long long >mp;
         int ans=solve(0,n,s,mp);
         return ans;*/
-        vector<int>dp(n+1,0);
+       /* vector<int>dp(n+1,0);
         dp[n]=1;
-    
+         
         for(int i=n-1;i>=0;i--){
              dp[i]+=dp[i+1];
                if(s[i]-'0'==0)
@@ -36,6 +36,26 @@ public:
                       dp[i]+=dp[i+2];
 
         }
-        return dp[0];
+        return dp[0];*/
+        int prev=1;
+        int prev1=1;
+        for(int i=n-1;i>=0;i--){
+            int curr=0;
+            if(s[i]-'0'==0)
+                {
+                    prev1=prev;
+                    prev=curr;
+                }
+            else{
+                curr+=prev;
+                if(i+1<n)
+                 if((s[i]-'0'==1)||((s[i]-'0'==2)&&(s[i+1]-'0'<=6)))
+                    curr+=prev1;
+                prev1=prev;
+                prev=curr;    
+            }    
+            
+        }
+        return prev;
     }
 };
