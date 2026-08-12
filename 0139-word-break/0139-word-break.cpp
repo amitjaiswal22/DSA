@@ -18,8 +18,20 @@ public:
     bool wordBreak(string s, vector<string>& wordDict) {
         int n=s.size();
         set<string>st(wordDict.begin(),wordDict.end());
-        map<int,bool>mp;
+        /**map<int,bool>mp;
         bool ans=solve(0,n,s,st,mp);
-        return ans;
+        return ans;*/
+        vector<bool>dp(n+1,false);
+dp[n] = true;
+        for(int i=n-1;i>=0;i--){
+              string temp="";
+              for(int j=i;j<n;j++){
+                   temp+=s[j];
+                   if(st.find(temp)!=st.end()){
+                         dp[i]=dp[i]||dp[j+1];
+                   }
+              }
+        }
+        return dp[0];
     }
 };
