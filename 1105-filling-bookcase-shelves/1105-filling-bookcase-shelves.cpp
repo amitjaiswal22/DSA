@@ -1,22 +1,50 @@
 class Solution {
 public:
-    int solve(int i,int n,vector<vector<int>>&books,int sw,int w,int h,  vector<vector<int>>&dp){
-        if(i>=n){
-            return h;
+
+    int solve(int i, int n, vector<vector<int>>& books,
+              int shelfWidth, vector<int>& dp) {
+
+        // No books remaining
+        if (i == n)
+            return 0;
+
+        // Already calculated
+        if (dp[i] != -1)
+            return dp[i];
+
+        int width = 0;
+        int height = 0;
+
+        int ans = INT_MAX;
+
+        // Try putting books i...j on the current shelf
+        for (int j = i; j < n; j++) {
+
+            width += books[j][0];
+
+            // Current shelf cannot contain more books
+            if (width > shelfWidth)
+                break;
+
+            height = max(height, books[j][1]);
+
+            // Current shelf height + remaining shelves
+            ans = min(
+                ans,
+                height + solve(j + 1, n, books, shelfWidth, dp)
+            );
         }
-        if(dp[i][w]!=-1)
-           return dp[i][w];
-        int new_self=h+solve(i+1,n,books,sw,books[i][0],books[i][1],dp);
-           int same_self=INT_MAX;
-        if(w+books[i][0]<=sw){
-                same_self=solve(i+1,n,books,sw,w+books[i][0],max(h,books[i][1]),dp);
-        }
-         return dp[i][w]=min(same_self,new_self);
+
+        return dp[i] = ans;
     }
-    int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
-        int n=books.size();
-        vector<vector<int>>dp(n,vector<int>(shelfWidth+1,-1));
-        int ans=solve(0,n,books,shelfWidth,0,0,dp);
-        return ans;
+
+    int minHeightShelves(vector<vector<int>>& books,
+                         int shelfWidth) {
+
+        int n = books.size();
+
+        vector<int> dp(n, -1);
+
+        return solve(0, n, books, shelfWidth, dp);
     }
 };
