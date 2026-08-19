@@ -20,17 +20,20 @@ public:
         vector<vector<int>>dp(n+1,vector<int>(m+1,0));
         /*int ans=solve(0,0,n,m,text1,text2,dp);
         return ans;*/
+        vector<int>prev(m+1,0);
        for(int i=n-1;i>=0;i--){
+         vector<int>curr(m+1,0);
          for(int j=m-1;j>=0;j--){
             int take=0;
            if(text1[i]==text2[j]){
-               take=1+dp[i+1][j+1];
+               take=1+prev[j+1];
            }   
-         int take_i=dp[i+1][j];
-         int take_j=dp[i][j+1];
-         dp[i][j]=max(take,max(take_i,take_j)); 
+         int take_i=prev[j];
+         int take_j=curr[j+1];
+         curr[j]=max(take,max(take_i,take_j)); 
          }
+         prev=curr;
        } 
-       return dp[0][0];
+       return prev[0];
     }
 };
