@@ -14,17 +14,23 @@ public:
     int uniquePaths(int m, int n) {
     vector<vector<int>>dp(m+1,vector<int>(n+1,0));
         dp[m-1][n-1]=1;
+        vector<int>prev(n+1,0);
+        prev[n-1]=1;
         for(int i=m-1;i>=0;i--){
+            vector<int>curr(n+1,0);
              for(int j=n-1;j>=0;j--){
                   if(i==m-1&&j==n-1)
-                     continue;
-                int right=dp[i][j+1];
-                int down=dp[i+1][j];
-          dp[i][j]=right+down;
+                      curr[j]=1;
+                   else {  
+                int right=curr[j+1];
+                int down=prev[j];
+                  curr[j]=right+down;
+                   }
              }
+             prev=curr;
         }
         //int ans=solve(0,0,m,n,dp);
 
-        return dp[0][0];
+        return prev[0];
     }
 };
