@@ -16,10 +16,7 @@ public: int ans=INT_MIN;
             return 0;
         int l=max(0,solve(root->left));
         int r=max(0,solve(root->right));
-        ans=max(ans,
-        max(root->val,
-        max(root->val+l,
-        max(root->val+r,root->val+l+r))));
+        ans=max(ans,root->val+l+r);
         return max(l,r)+root->val;    
     }
 
