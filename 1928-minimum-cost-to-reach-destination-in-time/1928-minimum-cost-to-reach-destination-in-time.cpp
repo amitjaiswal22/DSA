@@ -17,10 +17,9 @@ public:
             int cost=t.first;
             int time=t.second.first;
             int node=t.second.second;
-            if(node==n-1)
-                return cost;
-             if(cost>dist[node][time])
-                continue; 
+           /* if(node==n-1)
+                return cost;*/
+           
                 for(auto it:adj[node]){
                     int v=it.first;
                     int tim=it.second;
