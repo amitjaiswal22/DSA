@@ -1,58 +1,53 @@
 class TrieNode{
-        public:
-            char data;
-            TrieNode* child[26]={};
-            bool isTerminal;
-            TrieNode(char data){
-                this->data=data;
-                isTerminal=false;
-
-            }
-};
-
-class Trie {
+    public:
+       vector<TrieNode*>child;
+       bool isTerminal;
+       TrieNode(){
+        isTerminal=0;
+        child.resize(26);
+        for(int i=0;i<26;i++){
+               child[i]=nullptr;
+        }
+       }
+    
+};  
+    class Trie {
 public:
-TrieNode* root;
-    Trie() {  
-        root=new TrieNode('\0');
+TrieNode * root;
+    Trie() {
+        root=new TrieNode();
     }
     
     void insert(string word) {
-        solveInsert(root,word,0);
-    }
-    void solveInsert(TrieNode* root,string word,int i){
-            if(word.size()==i){
-                   root->isTerminal=1;
-                   return ;
+        TrieNode *curr=root;
+        for(char ch:word){
+            int ind=ch-'a';
+            if(curr->child[ind]==nullptr){
+                curr->child[ind]=new TrieNode();
             }
-            int ind=word[i]-'a';
-            if(root->child[ind]==nullptr){
-                    root->child[ind]=new TrieNode(word[i]);
-            }
-            solveInsert(root->child[ind],word,i+1);
+            curr=curr->child[ind];
+        }
+        curr->isTerminal=1;
     }
     
     bool search(string word) {
-        TrieNode *temp=root;
-        for(int i=0;i<word.size();i++){
-                 int ind=word[i]-'a';
-                 if(!temp->child[ind]|| temp->child[ind]->data!=word[i]){
-                        return false;
-                 }
-                 temp=temp->child[ind];
+        TrieNode* curr=root;
+        for(auto ch:word){
+            int ind=ch-'a';
+            if(!curr->child[ind])
+               return 0;
+           curr=curr->child[ind];    
         }
-        return temp->isTerminal;
-        
+        return curr->isTerminal;
     }
     
     bool startsWith(string prefix) {
-        TrieNode* temp=root;
-        for(int i=0;i<prefix.size();i++){
-            int ind=prefix[i]-'a';
-              if(!temp->child[ind]|| temp->child[ind]->data!=prefix[i]){
-                        return false;
-                 }
-                 temp=temp->child[ind];
+          TrieNode* curr=root;
+        for(auto ch:prefix){
+            int ind=ch-'a';
+            if(!curr->child[ind])
+               return 0;
+           curr=curr->child[ind];    
         }
         return 1;
     }
