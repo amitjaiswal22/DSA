@@ -1,69 +1,71 @@
+
 class Solution {
 public:
+  struct TrieNode{
+        TrieNode* left;
+        TrieNode* right;
 
-    struct TrieNode {
-        TrieNode* child[2];
+  };
+  void insert(TrieNode * root,int num){
+    TrieNode* curr=root;
+    for(int i=31;i>=0;i--){
+           int ith_bit=(num>>i)&1;
+           if(ith_bit){
+                 if(curr->right==nullptr)
+                        curr->right=new TrieNode();
+                  curr=curr->right;      
+           }
+           else{
+                   if(curr->left==nullptr)
+                        curr->left=new TrieNode();
+                  curr=curr->left;  
+           }
 
-        TrieNode() {
-            child[0] = nullptr;
-            child[1] = nullptr;
-        }
-    };
-
-    TrieNode* root = new TrieNode();
-
-    void insert(int num) {
-        TrieNode* curr = root;
-
-        for (int i = 31; i >= 0; i--) {
-            int bit = (num >> i) & 1;
-
-            if (!curr->child[bit]) {
-                curr->child[bit] = new TrieNode();
-            }
-
-            curr = curr->child[bit];
-        }
     }
+  }
+   int solve(TrieNode* root,int num){
+    TrieNode* curr=root;
+    int ans=0;
+    for(int i=31;i>=0;i--){
+           int ith_bit=(num>>i)&1;
+           if(ith_bit){
+                 if(curr->left!=nullptr){
+                    ans+=pow(2,i);
+                    curr=curr->left;
+                 }
+                 else{
+                        curr=curr->right;
+                 }
+           }
+           else{
 
-    int getMaxXOR(int num) {
-        TrieNode* curr = root;
-        int ans = 0;
+              if(curr->right!=nullptr){
+                    ans+=pow(2,i);
+                    curr=curr->right;
+                 }
+                 else{
+                        curr=curr->left;
+                 }
 
-        for (int i = 31; i >= 0; i--) {
 
-            int bit = (num >> i) & 1;
-
-            // To make XOR bit = 1,
-            // we want the opposite bit.
-            int opposite = 1 - bit;
-
-            if (curr->child[opposite]) {
-                ans |= (1 << i);
-                curr = curr->child[opposite];
-            }
-            else {
-                curr = curr->child[bit];
-            }
-        }
-
-        return ans;
+           }
     }
-
+    return ans;
+   }
     int findMaximumXOR(vector<int>& nums) {
+        int n=nums.size();
+        TrieNode* root=new TrieNode();
 
-        // Insert all numbers into Trie
-        for (int num : nums) {
-            insert(num);
+        for(int i=0;i<n;i++){
+                insert(root,nums[i]);
         }
 
-        int ans = 0;
-
-        // Find best XOR for every number
-        for (int num : nums) {
-            ans = max(ans, getMaxXOR(num));
+        int ans=0;
+        for(int i=0;i<n;i++){
+                int maxxor=solve(root,nums[i]);
+                ans=max(ans,maxxor);
         }
-
         return ans;
+
     }
 };
