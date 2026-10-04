@@ -10,10 +10,7 @@ public:
     void Union(int u,int v){
          int par_u=find(u);
          int par_v=find(v);
-         if(par_u==par_v){
-                  return;
-         }
-         // Union by rank
+        
         if (rank[par_u] > rank[par_v]) {
             parent[par_v] = par_u;
         }
